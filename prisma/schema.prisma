@@ -11,7 +11,55 @@ datasource db {
 }
 
 model Design {
-  id           Int    @id @default(autoincrement())
-  designNumber Int    @unique
-  status       String @default("Draft")
+  id                  Int                 @id @default(autoincrement())
+  designNumber        Int
+  name                String?
+  description         String?
+  featured            Boolean             @default(false)
+  date                DateTime            @default("1970-01-01T00:00:00Z")
+  status              String              @default("Draft")
+  designSubcategories DesignSubcategory[]
+  designType          DesignType          @relation(fields: [designTypeId], references: [id])
+  designTypeId        Int                 @default(0)
+  designTags          DesignTag[]
+}
+
+model DesignType {
+  id               Int              @id @default(autoincrement())
+  name             String           @unique
+  designs          Design[]
+  designCategories DesignCategory[]
+}
+
+model DesignCategory {
+  id                  Int                 @id @default(autoincrement())
+  name                String              @unique
+  designType          DesignType          @relation(fields: [designTypeId], references: [id])
+  designTypeId        Int
+  designSubcategories DesignSubcategory[]
+}
+
+model DesignSubcategory {
+  id               Int            @id @default(autoincrement())
+  name             String         @unique
+  designs          Design[]
+  designCategory   DesignCategory @relation(fields: [designCategoryId], references: [id])
+  designCategoryId Int
+}
+
+model DesignTag {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  designs Design[]
+}
+
+model Color {
+  id      Int    @id @default(autoincrement())
+  name    String @unique
+  hexCode String @unique
+}
+
+model Image {
+  id         Int    @id @default(autoincrement())
+  dropboxURL String
 }
