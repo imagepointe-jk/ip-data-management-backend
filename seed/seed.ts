@@ -5,6 +5,7 @@ import {
   designSubcategories,
   designTags,
   designs,
+  images,
 } from "./seedData";
 
 async function erase() {
@@ -13,6 +14,7 @@ async function erase() {
   await prisma.designCategory.deleteMany();
   await prisma.designTag.deleteMany();
   await prisma.color.deleteMany();
+  await prisma.image.deleteMany();
 }
 
 async function createColors() {
@@ -21,6 +23,16 @@ async function createColors() {
       data: {
         hexCode: color.hexCode,
         name: color.name,
+      },
+    });
+  }
+}
+
+async function createImages() {
+  for (const image of images) {
+    await prisma.image.create({
+      data: {
+        url: image.url,
       },
     });
   }
@@ -68,31 +80,58 @@ async function createDesignSubcategories() {
 
 async function createDesigns() {
   for (const design of designs) {
-    await prisma.design.create({
-      data: {
-        designNumber: design.designNumber,
-        date: design.date,
-        description: design.description,
-        designSubcategories: {
-          connect: design.subcategories.map((subcat) => ({ name: subcat })),
+    try {
+      const image = await prisma.image.findFirst({
+        where: {
+          url: design.imageUrl,
         },
-        designTags: {
-          connect: design.tags.map((tag) => ({ name: tag })),
-        },
-        designType: {
-          connect: {
-            id: design.designTypeId,
+      });
+      if (!image)
+        throw new Error(
+          `Could not find seeded image for design number ${design.designNumber}`
+        );
+      await prisma.design.create({
+        data: {
+          designNumber: design.designNumber,
+          date: design.date,
+          description: design.description,
+          designSubcategories: {
+            connect: design.subcategories.map((subcat) => ({ name: subcat })),
+          },
+          designTags: {
+            connect: design.tags.map((tag) => ({ name: tag })),
+          },
+          designType: {
+            connect: {
+              id: design.designTypeId,
+            },
+          },
+          featured: design.featured,
+          name: design.name,
+          status: design.status,
+          defaultBackgroundColor: {
+            connect: {
+              name: design.defaultBackgroundColor,
+            },
+          },
+          image: {
+            connect: {
+              id: image?.id,
+            },
           },
         },
-        featured: design.featured,
-        name: design.name,
-        status: design.status,
-      },
-    });
+      });
+    } catch (error) {
+      console.error(
+        `Failed to seed design number ${design.designNumber}`,
+        error
+      );
+    }
   }
 }
 
 async function seed() {
+  await createImages();
   await createColors();
   await createTags();
   await createDesignCategories();

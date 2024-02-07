@@ -11,9 +11,14 @@ const screenPrintId = 1;
 const embroideryId = 2;
 const published = "Published";
 const draft = "Draft";
-type SeedDesign = Omit<Design, "id"> & {
+type SeedDesign = Omit<
+  Design,
+  "id" | "defaultBackgroundColorId" | "imageId"
+> & {
   subcategories: string[];
   tags: string[];
+  defaultBackgroundColor: string;
+  imageUrl: string;
 };
 type SeedDesignCategory = Omit<DesignCategory, "id">;
 type SeedDesignSubcategory = Omit<
@@ -37,6 +42,9 @@ export const designs: SeedDesign[] = [
     status: published,
     subcategories: ["Best Sellers"],
     tags: ["America", "Golf"],
+    defaultBackgroundColor: "Black",
+    imageUrl:
+      "https://www.imagepointe.com/wp-content/uploads/2024/02/567-15.png",
   },
   {
     date: new Date("3/13/2015"),
@@ -48,6 +56,9 @@ export const designs: SeedDesign[] = [
     status: published,
     subcategories: ["Best Sellers", "Veterans Day"],
     tags: ["America", "Golf"],
+    defaultBackgroundColor: "Purple",
+    imageUrl:
+      "https://www.imagepointe.com/wp-content/uploads/2024/02/758-6.jpg",
   },
   {
     date: new Date("4/02/2018"),
@@ -59,6 +70,8 @@ export const designs: SeedDesign[] = [
     status: published,
     subcategories: ["New Designs"],
     tags: ["America", "Golf"],
+    defaultBackgroundColor: "Coyote Brown",
+    imageUrl: "https://www.imagepointe.com/wp-content/uploads/2024/02/205.jpg",
   },
   {
     date: new Date("9/09/2013"),
@@ -70,6 +83,8 @@ export const designs: SeedDesign[] = [
     status: published,
     subcategories: ["St. Patrick's Day"],
     tags: ["America", "Golf"],
+    defaultBackgroundColor: "Safety Orange",
+    imageUrl: "https://www.imagepointe.com/wp-content/uploads/2024/02/1028.png",
   },
   {
     date: new Date("11/23/2011"),
@@ -81,6 +96,9 @@ export const designs: SeedDesign[] = [
     status: draft,
     subcategories: ["Best Sellers", "Veterans Day", "Strike & Negotiations"],
     tags: ["America", "Golf"],
+    defaultBackgroundColor: "Black",
+    imageUrl:
+      "https://www.imagepointe.com/wp-content/uploads/2024/02/1611-darks.png",
   },
   {
     date: new Date("10/25/2019"),
@@ -92,6 +110,8 @@ export const designs: SeedDesign[] = [
     status: published,
     subcategories: ["Veterans Day", "Strike & Negotiations"],
     tags: ["America", "Golf"],
+    defaultBackgroundColor: "Flag Red",
+    imageUrl: "",
   },
   {
     date: new Date("5/11/2016"),
@@ -103,6 +123,8 @@ export const designs: SeedDesign[] = [
     status: published,
     subcategories: ["APWU"],
     tags: ["IBEW", "Flowers", "Dues", "America"],
+    defaultBackgroundColor: "Olive Drab Green",
+    imageUrl: "https://www.imagepointe.com/wp-content/uploads/2024/02/1566.png",
   },
   {
     date: new Date("4/13/2013"),
@@ -114,6 +136,9 @@ export const designs: SeedDesign[] = [
     status: draft,
     subcategories: ["APWU", "BAC"],
     tags: ["Holiday"],
+    defaultBackgroundColor: "Safety Orange",
+    imageUrl:
+      "https://www.imagepointe.com/wp-content/uploads/2024/02/1135-darks.png",
   },
   {
     date: new Date("1/06/2022"),
@@ -125,6 +150,9 @@ export const designs: SeedDesign[] = [
     status: published,
     subcategories: ["APWU"],
     tags: ["America", "Eagle"],
+    defaultBackgroundColor: "Black",
+    imageUrl:
+      "https://www.imagepointe.com/wp-content/uploads/2024/02/759-lights.png",
   },
   {
     date: new Date("3/19/2023"),
@@ -136,6 +164,9 @@ export const designs: SeedDesign[] = [
     status: published,
     subcategories: ["BAC"],
     tags: ["Flowers", "Dues"],
+    defaultBackgroundColor: "Purple",
+    imageUrl:
+      "https://www.imagepointe.com/wp-content/uploads/2024/02/913-lights.png",
   },
 ];
 
@@ -248,5 +279,38 @@ export const colors: SeedColor[] = [
   {
     hexCode: "46326f",
     name: "Purple",
+  },
+];
+
+export const images: SeedImage[] = [
+  {
+    url: "https://www.imagepointe.com/wp-content/uploads/2024/02/567-15.png",
+  },
+  {
+    url: "https://www.imagepointe.com/wp-content/uploads/2024/02/758-6.jpg",
+  },
+  {
+    url: "https://www.imagepointe.com/wp-content/uploads/2024/02/205.jpg",
+  },
+  {
+    url: "https://www.imagepointe.com/wp-content/uploads/2024/02/1028.png",
+  },
+  {
+    url: "https://www.imagepointe.com/wp-content/uploads/2024/02/1611-darks.png",
+  },
+  {
+    url: "",
+  },
+  {
+    url: "https://www.imagepointe.com/wp-content/uploads/2024/02/1566.png",
+  },
+  {
+    url: "https://www.imagepointe.com/wp-content/uploads/2024/02/1135-darks.png",
+  },
+  {
+    url: "https://www.imagepointe.com/wp-content/uploads/2024/02/759-lights.png",
+  },
+  {
+    url: "https://www.imagepointe.com/wp-content/uploads/2024/02/913-lights.png",
   },
 ];

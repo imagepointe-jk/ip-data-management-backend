@@ -22,6 +22,8 @@ app.get("/designs", async (req, res) => {
       designSubcategories: true,
       designTags: true,
       designType: true,
+      image: true,
+      defaultBackgroundColor: true,
     },
   });
   return res.status(200).send(designs);
