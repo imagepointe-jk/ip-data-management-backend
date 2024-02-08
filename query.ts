@@ -11,7 +11,9 @@ export function parseDesignsQuery(query: any): DesignsQuery {
   const pageNumber = !isNaN(+`${pageNumberQuery}`)
     ? +`${pageNumberQuery}`
     : undefined;
-  const designType = decodeURIComponent(designTypeQuery);
+  const designType = designTypeQuery
+    ? decodeURIComponent(designTypeQuery)
+    : "Screen Print";
 
   return {
     perPage,

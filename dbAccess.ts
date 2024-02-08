@@ -5,6 +5,7 @@ import { DesignsQuery } from "./types";
 export async function getDesigns(query: DesignsQuery) {
   const { pageNumber, perPage, designType } = query;
   const countPerPage = perPage || defaultPerPage;
+  console.log(`${countPerPage} per page`);
   return prisma.design.findMany({
     include: {
       designSubcategories: true,
