@@ -22,7 +22,7 @@ model Design {
   designType               DesignType          @relation(fields: [designTypeId], references: [id])
   designTypeId             Int                 @default(0)
   designTags               DesignTag[]
-  image                    Image               @relation(fields: [imageId], references: [id])
+  image                    Image?              @relation(fields: [imageId], references: [id])
   imageId                  Int
   defaultBackgroundColor   Color               @relation(fields: [defaultBackgroundColorId], references: [id])
   defaultBackgroundColorId Int
@@ -45,7 +45,7 @@ model DesignCategory {
 
 model DesignSubcategory {
   id               Int            @id @default(autoincrement())
-  name             String         @unique
+  name             String
   designs          Design[]
   designCategory   DesignCategory @relation(fields: [designCategoryId], references: [id])
   designCategoryId Int

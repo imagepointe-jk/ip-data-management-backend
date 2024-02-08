@@ -90,13 +90,20 @@ async function createDesigns() {
         throw new Error(
           `Could not find seeded image for design number ${design.designNumber}`
         );
+      const subcategoryIds = [];
+      for (const subcat of design.subcategories) {
+        const foundSubcat = await prisma.designSubcategory.findFirst({
+          where: { name: subcat },
+        });
+        if (foundSubcat) subcategoryIds.push(foundSubcat.id);
+      }
       await prisma.design.create({
         data: {
           designNumber: design.designNumber,
           date: design.date,
           description: design.description,
           designSubcategories: {
-            connect: design.subcategories.map((subcat) => ({ name: subcat })),
+            connect: subcategoryIds.map((id) => ({ id })),
           },
           designTags: {
             connect: design.tags.map((tag) => ({ name: tag })),
