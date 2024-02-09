@@ -1,4 +1,4 @@
-import { DesignsQuery } from "./types";
+import { DesignsQuery } from "./sharedTypes";
 
 export function parseDesignsQuery(query: any): DesignsQuery {
   const {

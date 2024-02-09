@@ -1,19 +1,20 @@
 import { defaultPerPage } from "./constants";
 import { prisma } from "./prismaClient";
-import { DesignsQuery } from "./types";
+import { DesignsQuery } from "./sharedTypes";
+
+const standardDesignIncludes = {
+  designSubcategories: true,
+  designTags: true,
+  designType: true,
+  image: true,
+  defaultBackgroundColor: true,
+};
 
 export async function getDesigns(query: DesignsQuery) {
   const { pageNumber, perPage, designType } = query;
   const countPerPage = perPage || defaultPerPage;
-  console.log(`${countPerPage} per page`);
   return prisma.design.findMany({
-    include: {
-      designSubcategories: true,
-      designTags: true,
-      designType: true,
-      image: true,
-      defaultBackgroundColor: true,
-    },
+    include: standardDesignIncludes,
     where: {
       designType: {
         name: designType,
@@ -21,5 +22,14 @@ export async function getDesigns(query: DesignsQuery) {
     },
     take: countPerPage,
     skip: pageNumber ? countPerPage * (pageNumber - 1) : 0,
+  });
+}
+
+export async function getSingleDesign(designId: number) {
+  return prisma.design.findUnique({
+    where: {
+      id: designId,
+    },
+    include: standardDesignIncludes,
   });
 }
