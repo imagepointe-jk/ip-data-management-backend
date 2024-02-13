@@ -3,7 +3,7 @@ import { getDesigns, getSingleDesign } from "./dbAccess";
 import { parseDesignsQuery } from "./query";
 import { BAD_REQUEST, NOT_FOUND, OK } from "./statusCodes";
 import { message } from "./utility";
-import { ZodError, z } from "zod";
+import { ZodError } from "zod";
 import { validateRequest } from "zod-express-middleware";
 import { designsParamsSchema } from "./schema";
 
@@ -38,9 +38,9 @@ app.get(
       }
 
       const query = parseDesignsQuery(req.query);
-      const designs = await getDesigns(query);
+      const designResults = await getDesigns(query);
 
-      return res.status(OK).send(designs);
+      return res.status(OK).send(designResults);
     } catch (error) {
       if (error instanceof ZodError) {
         return res.status(BAD_REQUEST).send(error);

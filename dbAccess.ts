@@ -13,16 +13,27 @@ const standardDesignIncludes = {
 export async function getDesigns(query: DesignsQuery) {
   const { pageNumber, perPage, designType } = query;
   const countPerPage = perPage || defaultPerPage;
-  return prisma.design.findMany({
-    include: standardDesignIncludes,
-    where: {
-      designType: {
-        name: designType,
-      },
+  const where = {
+    designType: {
+      name: designType,
     },
-    take: countPerPage,
-    skip: pageNumber ? countPerPage * (pageNumber - 1) : 0,
-  });
+  };
+  const [paginatedDesigns, allMatchingDesigns] = await prisma.$transaction([
+    prisma.design.findMany({
+      include: standardDesignIncludes,
+      where,
+      take: countPerPage,
+      skip: pageNumber ? countPerPage * (pageNumber - 1) : 0,
+    }),
+    prisma.design.findMany({
+      where,
+    }),
+  ]);
+
+  return {
+    designs: paginatedDesigns,
+    totalResults: allMatchingDesigns.length,
+  };
 }
 
 export async function getSingleDesign(designId: number) {
